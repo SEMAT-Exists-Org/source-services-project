@@ -1,8 +1,8 @@
 {
-  "name": "user-service",
+  "name": "project-service",
   "version": "0.0.1",
   "private": true,
-  "description": "User service for SEMAT",
+  "description": "Project service for SEMAT",
   "author": "Saulius Zukauskas",
   "dependencies": {
     "body-parser": "~1.0.2",
