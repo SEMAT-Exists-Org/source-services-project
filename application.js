@@ -30,7 +30,7 @@ app.use('/mbaas', mbaasExpress.mbaas);
 app.use(mbaasExpress.fhmiddleware());
 
 // fhlint-begin: custom-routes
-app.use('/users', require('./apis/users.js')());
+app.use('/projects', require('./apis/projects.js')());
 app.use('/', require('./apis/unused.js')());
 // fhlint-end
 
