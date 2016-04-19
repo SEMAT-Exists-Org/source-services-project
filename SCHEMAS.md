@@ -1,4 +1,4 @@
-### Project Service Resources
+### Project Service
 
 Project service is responsible for providing resources for creating and managing SEMAT projects. Consumed by mobile and web client apps.
 
@@ -12,7 +12,11 @@ Resources available:
 	PUT /projects/{projectid}
 	DELETE /projects/{projectid}
 	
-Below are the example requests / responses, together with JSON schemas for payloads.
+Below are the example requests / responses.
+
+Where applicable, JSON schemas are provided for request payloads. JSON Schemas are based on the [JSON data format](http://json-schema.org/).
+
+### Project Service Resources
 
 #### GET /projects
 
