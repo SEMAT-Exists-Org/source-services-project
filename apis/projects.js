@@ -29,9 +29,9 @@ function projectRoutes() {
     res.status(200);
 
     var projectlist = [];
-    projectlist.push({'projectname':'Project Name 1','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery','project_users':3});
-    projectlist.push({'projectname':'Project Name 2','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery','project_users':2});
-    projectlist.push({'projectname':'Project Name 3','projectid':'5703f9eb5306583d5a000020','current_practice':'','project_users':0});
+    projectlist.push({'projectname':'Project Name 1','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery','users':[{"userid": "5703f9eb5306583d5a000118"},{"userid": "5703f9eb5306583d5a000119"}]});
+    projectlist.push({'projectname':'Project Name 2','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery','users':[{"userid": "5703f9eb5306583d5a000118"}]});
+    projectlist.push({'projectname':'Project Name 3','projectid':'5703f9eb5306583d5a000020','current_practice':'','project_users':[]});
 
     res.json({
       status: "success",
@@ -45,7 +45,7 @@ function projectRoutes() {
     // initial stage, mock responses
     res.status(200);
 
-    var project = {'projectname':'Example Project 1','projectid':'5703f9eb5306583d5a000018','something':'something'};
+    var project = {'projectname':'Project Name 1','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},"users":[{"userid": "5703f9eb5306583d5a000118"}]};
     
     res.json({
       status: "success",
@@ -60,8 +60,8 @@ function projectRoutes() {
     res.status(200);
 
     var projectlist = [];
-    projectlist.push({'projectname':'Example Project 2','projectid':'5703f9eb5306583d5a000019','something':'something'});
-    projectlist.push({'projectname':'Example Project 3','projectid':'5703f9eb5306583d5a000020','something':'something'});
+    projectlist.push({'projectname':'Project Name 1','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery','users':[{"userid": "5703f9eb5306583d5a000118"},{"userid": "5703f9eb5306583d5a000119"}]});
+    projectlist.push({'projectname':'Project Name 2','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery','users':[{"userid": "5703f9eb5306583d5a000118"}]});
 
     res.json({
       status: "success",
@@ -75,7 +75,7 @@ function projectRoutes() {
     // initial stage, mock responses
     res.status(200);
 
-    var project = {'projectname':'Example Project 1','projectid':'5703f9eb5306583d5a000018','something':'something'};
+    var project = {'projectname':'Project Name 1','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},"users":[{"userid": "5703f9eb5306583d5a000118"}]};
     
     res.json({
       status: "success",
@@ -89,7 +89,7 @@ function projectRoutes() {
     // initial stage, mock responses
     res.status(200);
 
-    var project = {'projectname':'Example Project 1','projectid':'5703f9eb5306583d5a000018','something':'something'};
+    var project = {'projectname':'Project Name 1','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},"users":[{"userid": "5703f9eb5306583d5a000118"}]};
     
     res.json({
       status: "success",
@@ -105,7 +105,7 @@ function projectRoutes() {
     
     res.json({
       status: "success",
-      massage: "deleted"
+      massage: "project deleted"
     });
   });
 
