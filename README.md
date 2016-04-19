@@ -17,7 +17,7 @@ Project service currentlly exposes the following resources
 
 #### JSON Schemas
 
-The request / response examples and JSON schemas for communication with Project servie are exposed in the SCHEMAS description.
+The request / response examples and JSON schemas for communication with Project servie are exposed in the [SCHEMAS description document](https://github.com/SEMAT-Exists-Org/source-services-project/blob/master/SCHEMAS.md).
 
 #### Running Project Service
 
@@ -27,7 +27,7 @@ It is designed to be run locally on developers mashine or to be deployed to the 
 
 **Local deployment**
 
-*Important: Project currentlly only supports **NodeJS version v0.10.30***
+**Important:** *Project currentlly only supports NodeJS version v0.10.30*
 
 In order to run this service locally on developer machine, you have to have [NodeJS (and npm)](https://nodejs.org/en/) + [MongoDB](https://www.mongodb.org/downloads#production) (default ports) + [Redis](http://redis.io) (default ports) installed an running.
 
