@@ -33,9 +33,18 @@ This resource retrieves all the created projects.
   "status": "success",
   "projects": [
     {
-      "projectname": "Project Name 1",
+      "projectname": "AB Industries",
       "projectid": "5703f9eb5306583d5a000018",
       "current_practice": "Discovery",
+      "semat_alphas": {
+        "opportunity": "identified",
+        "requirements": "conceived",
+        "stakeholders": "recognised",
+        "team": "not established",
+        "way_of_working": "not established",
+        "work": "not established",
+        "software_system": "not established"
+      },
       "users": [
         {
           "userid": "5703f9eb5306583d5a000118"
@@ -46,9 +55,18 @@ This resource retrieves all the created projects.
       ]
     },
     {
-      "projectname": "Project Name 2",
+      "projectname": "Lufthansa",
       "projectid": "5703f9eb5306583d5a000019",
       "current_practice": "Discovery",
+      "semat_alphas": {
+        "opportunity": "identified",
+        "requirements": "conceived",
+        "stakeholders": "recognised",
+        "team": "not established",
+        "way_of_working": "not established",
+        "work": "not established",
+        "software_system": "not established"
+      },
       "users": [
         {
           "userid": "5703f9eb5306583d5a000118"
@@ -56,10 +74,23 @@ This resource retrieves all the created projects.
       ]
     },
     {
-      "projectname": "Project Name 3",
+      "projectname": "Deloitte Digital",
       "projectid": "5703f9eb5306583d5a000020",
       "current_practice": "",
-      "users": []
+      "semat_alphas": {
+        "opportunity": "identified",
+        "requirements": "conceived",
+        "stakeholders": "recognised",
+        "team": "not established",
+        "way_of_working": "not established",
+        "work": "not established",
+        "software_system": "not established"
+      },
+      "users": [
+        {
+          "userid": "5703f9eb5306583d5a000118"
+        }
+      ]
     }
   ]
 }	
@@ -100,8 +131,8 @@ This resource retrieves the details about the specific project.
 {
   "status": "success",
   "project": {
-    "projectname": "Project Name 1",
-    "projectid": "5703f9eb5306583d5a000018",
+    "projectname": "Lufthansa",
+    "projectid": "5703f9eb5306583d5a000019",
     "current_practice": "Discovery",
     "semat_alphas": {
       "opportunity": "identified",
@@ -113,9 +144,9 @@ This resource retrieves the details about the specific project.
       "software_system": "not established"
     },
     "users": [
-    	{
-          "userid": "5703f9eb5306583d5a000118"
-        }
+      {
+        "userid": "5703f9eb5306583d5a000118"
+      }
     ]
   }
 }
@@ -156,9 +187,18 @@ This resource retrieves all the projects for specific user.
   "status": "success",
   "projects": [
     {
-      "projectname": "Project Name 1",
+      "projectname": "AB Industries",
       "projectid": "5703f9eb5306583d5a000018",
       "current_practice": "Discovery",
+      "semat_alphas": {
+        "opportunity": "identified",
+        "requirements": "conceived",
+        "stakeholders": "recognised",
+        "team": "not established",
+        "way_of_working": "not established",
+        "work": "not established",
+        "software_system": "not established"
+      },
       "users": [
         {
           "userid": "5703f9eb5306583d5a000118"
@@ -169,9 +209,37 @@ This resource retrieves all the projects for specific user.
       ]
     },
     {
-      "projectname": "Project Name 2",
+      "projectname": "Lufthansa",
       "projectid": "5703f9eb5306583d5a000019",
       "current_practice": "Discovery",
+      "semat_alphas": {
+        "opportunity": "identified",
+        "requirements": "conceived",
+        "stakeholders": "recognised",
+        "team": "not established",
+        "way_of_working": "not established",
+        "work": "not established",
+        "software_system": "not established"
+      },
+      "users": [
+        {
+          "userid": "5703f9eb5306583d5a000118"
+        }
+      ]
+    },
+    {
+      "projectname": "Deloitte Digital",
+      "projectid": "5703f9eb5306583d5a000020",
+      "current_practice": "",
+      "semat_alphas": {
+        "opportunity": "identified",
+        "requirements": "conceived",
+        "stakeholders": "recognised",
+        "team": "not established",
+        "way_of_working": "not established",
+        "work": "not established",
+        "software_system": "not established"
+      },
       "users": [
         {
           "userid": "5703f9eb5306583d5a000118"
@@ -179,7 +247,7 @@ This resource retrieves all the projects for specific user.
       ]
     }
   ]
-}	
+}
 ```
 
 *Internal Error*
@@ -484,12 +552,3 @@ This resource deletes the specific project.
   "code": "404"
 }
 ```
-
-
-
-
-			
-	
-
-
-	 

@@ -45,8 +45,8 @@ function projectRoutes() {
     // initial stage, mock responses
     res.status(200);
 
-    projectlist.push({'projectname':'Lufthansa','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
-    
+    var project = {'projectname':'Lufthansa','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]};
+
     res.json({
       status: "success",
       project: project
