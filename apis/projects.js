@@ -69,19 +69,78 @@ function projectRoutes() {
       projects: projectlist
     });    
   });
-
+  
   // API resource to create a new project
-  projectRouter.post('/', function(req, res) {  
-    
-    // initial stage, mock responses
-    res.status(200);
+  projectRouter.post('/', function(req, res) {
 
-    var project = {'projectname':'Project Name 1','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},"users":[{"userid": "5703f9eb5306583d5a000118"}]};
-    
-    res.json({
-      status: "success",
-      project: project
-    });
+    // approach
+    // 1. validate project_name and users from the request JSON payload
+    // 2. create new project with the requrs details. project guid becomes a unique id.
+
+    // retrieve request payload details
+    var project_name = req.body.project_name || '';
+    var users = req.body.users || '';
+
+    // only progress if all required fields are present
+    if (validator.isAlphanumeric(project_name) && (Object.prototype.toString.call(users) === '[object Array]')) {
+
+      // validation passed
+      // create the new project
+
+      // TODO
+      // semat alphas / alpha states relate to specific library
+      // hardcoded for now, but to be dynamically pulled in the future
+      var semat_alphas = {
+        "opportunity": "not defined",
+        "requirements": "not defined",
+        "stakeholders": "not defined",
+        "team": "not defined",
+        "way_of_working": "not defined",
+        "work": "not defined",
+        "software_system": "not defined"
+      } 
+
+      // new project data
+      var options = {
+        "act": "create",
+        "type": "sematProjects", // Entity/Collection name
+        "fields": { 
+          "project_name": ""+project_name,
+          "current_practice":"",
+          "semat_alphas": semat_alphas,
+          "users": users
+        }
+      };
+
+      // mongodb request
+      fh.db(options, function (err, data) {               
+        // db comms error
+        if (err) {
+          console.error("dbcomms error: " + err);
+          // internal error response
+          helper.internal500(res);             
+        } 
+        else { // new project created
+                
+          var project = {};
+          project.project_name = data.fields.project_name;
+          project.projectid = data.guid;
+          project.current_practice = data.fields.current_practice;
+          project.semat_alphas = data.fields.semat_alphas;
+
+          // good to send the response
+          res.status(200);
+          res.json({
+            status: "success",
+            project: project,
+            users: data.fields.users
+          });
+        }
+      });
+    }
+    else { // malformed request, wrong request values
+      helper.malformed400(res);    
+    }
   });
 
   // API resource to update an existing project
@@ -124,7 +183,7 @@ function projectRoutes() {
       });
   });
 
-  projectRouter..get('*', function(req, res) {
+  projectRouter.get('*', function(req, res) {
 
       // error response
       res.status(400);

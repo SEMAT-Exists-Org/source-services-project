@@ -3,8 +3,6 @@
 // set of common methods used accross all API resources
 // author @sauliuz
 
-
-
 // initializer with default responses directory
 var build_helper = function() {
 
@@ -12,12 +10,10 @@ var build_helper = function() {
   return helper;
 }
 
-
 // constructor
 function Helper () {
   console.log('Helper funcions loaded')
 };
-
 
 // Error responses //
 
