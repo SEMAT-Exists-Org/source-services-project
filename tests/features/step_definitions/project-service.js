@@ -7,7 +7,7 @@ module.exports = function() {
 	
 	// cleanup before every scenario
 	this.Before(function(scenario, callback) {
-		this.apickli = new apickli.Apickli('http', 'localhost:8001');
+		this.apickli = new apickli.Apickli('http', 'localhost:8002');
 		callback();
 	});
 
