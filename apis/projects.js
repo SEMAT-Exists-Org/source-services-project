@@ -165,14 +165,35 @@ function projectRoutes() {
   });
 
   // API resource to delete an existing project
-  projectRouter.delete('/:projectid', function(req, res) {  
+  projectRouter.delete('/:guid', function(req, res) {  
     
-    // initial stage, mock responses
-    res.status(200);
-    
-    res.json({
-      status: "success",
-      massage: "project deleted"
+    var guid = req.params.guid || '';
+
+    // prepare project delete
+    var options = {
+      "act": "delete",
+      "type": "sematProjects", // Entity/Collection name
+      "guid": ""+guid
+    };
+
+    fh.db(options, function (err, data) {
+      
+      if (err) {
+        console.error("dbcomms error: " + err);
+        // internal error response
+        helper.internal500(res);
+      }      
+      else {
+        // if returned object is empty 
+        // the project was not found in database
+        if (data == {}){
+          helper.notFound404(res);
+        } 
+        else { // succesfully deleted the project
+          res.status(200);
+          res.json({status: 'success', message: 'project deleted'});
+        }                     
+      }            
     });
   });
   
