@@ -24,19 +24,26 @@ function projectRoutes() {
   
   // API resource to get all projects
   projectRouter.get('/', function(req, res) {
+    
+    // preparing mondodb query for all projects
+    var options = {
+      "act": "list",
+      "type": "sematProjects" // Entity/Collection name    
+    };
 
-    // initial stage, mock responses
-    res.status(200);
-
-    var projectlist = [];
-    projectlist.push({'projectname':'AB Industries','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"},{"userid": "5703f9eb5306583d5a000119"}]});
-    projectlist.push({'projectname':'Lufthansa','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
-    projectlist.push({'projectname':'Deloitte Digital','projectid':'5703f9eb5306583d5a000020','current_practice':'',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
-
-    res.json({
-      status: "success",
-      projects: projectlist
-    });    
+    fh.db(options, function (err, data) {
+      
+      if (err) {
+        console.error("dbcomms error: " + err);
+        // internal error response
+        helper.internal500(res);
+      }      
+      else {
+        // user list response
+        res.status(200);
+        res.json(data);                
+      }    
+    });   
   });
 
   // API resource to retrieve single project details
