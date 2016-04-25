@@ -1,8 +1,9 @@
-// User service
-// 	responsible for providing API resources for user management
-//	consumed by client applications and other services
+// Project service
+// responsible for providing API resources for project management
+// consumed by client applications
+// interacts with Users and Library services
 //
-// author @sauliuz
+// author https://github.com/sauliuz
 
 
 // dependencies

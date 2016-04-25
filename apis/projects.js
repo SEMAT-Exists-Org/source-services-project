@@ -109,10 +109,34 @@ function projectRoutes() {
       massage: "project deleted"
     });
   });
+  
+  // Generic catch all
+  // if non of the above routes are matched
+  // provide generic error responses
+  projectRouter.get('*', function(req, res) {
 
+      // error response
+      res.status(400);
+      res.json({
+        status: 'error',
+        message: 'malformed request, check JSON schema',
+        "code":"400"
+      });
+  });
 
+  projectRouter..get('*', function(req, res) {
+
+      // error response
+      res.status(400);
+      res.json({
+        status: 'error',
+        message: 'malformed request, check JSON schema',
+        "code":"400"
+      });
+  });
+
+  // end of resources
   return projectRouter;
 };
 
 module.exports = projectRoutes;
-// the end
