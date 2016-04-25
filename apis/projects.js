@@ -63,18 +63,41 @@ function projectRoutes() {
   // API resource to get all projects for specific user
   projectRouter.get('/user/:userid', function(req, res) {
 
-    // initial stage, mock responses
-    res.status(200);
+    // approach
+    // 1. validate the format of userid and  user token
+    // 2. get details from User service which project id's he has attached
+    // 3. get the details of array of projectids and return back to the client
 
-    var projectlist = [];
-    projectlist.push({'projectname':'AB Industries','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"},{"userid": "5703f9eb5306583d5a000119"}]});
-    projectlist.push({'projectname':'Lufthansa','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
-    projectlist.push({'projectname':'Deloitte Digital','projectid':'5703f9eb5306583d5a000020','current_practice':'',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
+    // security
+    // 1. client application provides user token it received after user
+    // has loged in via user service.
+    // 2. project service is just proxying user token. If user token is not admin
+    // project service is just proxying error response back
 
-    res.json({
-      status: "success",
-      projects: projectlist
-    });    
+    var token = req.headers.token || '';
+    var userid = req.params.userid || '';
+
+    // validate if valid uuid value
+    if (validator.isUUID(token,4) && validator.isAlphanumeric(userid)){
+
+      // initial stage, mock responses
+      res.status(200);
+
+      var projectlist = [];
+      projectlist.push({'projectname':'AB Industries','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"},{"userid": "5703f9eb5306583d5a000119"}]});
+      projectlist.push({'projectname':'Lufthansa','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
+      projectlist.push({'projectname':'Deloitte Digital','projectid':'5703f9eb5306583d5a000020','current_practice':'',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
+
+      res.json({
+        status: "success",
+        projects: projectlist
+      });
+
+    }     
+    else { // payload validation failed      
+      helper.malformed400(res);
+    }
+
   });
   
   // API resource to create a new project
