@@ -103,12 +103,11 @@ function projectRoutes() {
 
         // comms error
         if (error) {
-          console.error("dbcomms error: " + error);
+          console.error("error comms to user: " + error);
           // internal error response
           helper.internal500(res);             
-        }
-
-        if (response.statusCode == 200) {          
+        } 
+        else if (response.statusCode == 200) {          
           console.error(response.body);
 
           var user = JSON.parse(response.body);
@@ -151,7 +150,6 @@ function projectRoutes() {
           //   status: "success",
           //   projects: projectlist
           // });
-
         } 
         else if (response.statusCode == 302) {
           helper.relogin302(res);
