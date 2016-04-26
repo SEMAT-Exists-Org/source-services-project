@@ -25,8 +25,6 @@ Project service is a NodeJS application.
 
 It is designed to be run locally on developers mashine or to be deployed to the cloud instance of [RedHat Mobile Application platfrom](https://www.redhat.com/en/technologies/mobile/application-platform).
 
-**Local deployment**
-
 **Important:** *Project currentlly only supports NodeJS version v0.10.30*
 
 In order to run this service locally on developer machine, you have to have [NodeJS (and npm)](https://nodejs.org/en/) + [MongoDB](https://www.mongodb.org/downloads#production) (default ports) + [Redis](http://redis.io) (default ports) installed an running.

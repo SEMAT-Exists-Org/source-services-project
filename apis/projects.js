@@ -11,11 +11,21 @@ var fh = require('fh-mbaas-api');
 var validator = require('validator');
 var crypto = require('crypto');
 var uuid = require('uuid');
+var request = require('request');
+var async = require("async");
+
 
 // common methods
 var helper = require('../utilities/helper.js');
 
 
+// service endpoints
+// TODO move these to configuration. 
+//var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
+var userServiceUrl = 'http://localhost:8001/users';
+
+
+// main funcionality
 function projectRoutes() {
   
   var projectRouter = new express.Router();
@@ -79,24 +89,87 @@ function projectRoutes() {
 
     // validate if valid uuid value
     if (validator.isUUID(token,4) && validator.isAlphanumeric(userid)){
+      
+      // get user details from user service
+      var options = {
+        url: userServiceUrl+'/'+userid,
+        headers: {
+          'User-Agent': 'user-service',
+          'token':token
+        }
+      };
 
-      // initial stage, mock responses
-      res.status(200);
+      request(options, function callback(error, response, body) {
 
-      var projectlist = [];
-      projectlist.push({'projectname':'AB Industries','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"},{"userid": "5703f9eb5306583d5a000119"}]});
-      projectlist.push({'projectname':'Lufthansa','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
-      projectlist.push({'projectname':'Deloitte Digital','projectid':'5703f9eb5306583d5a000020','current_practice':'',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
+        // comms error
+        if (error) {
+          console.error("dbcomms error: " + error);
+          // internal error response
+          helper.internal500(res);             
+        }
 
-      res.json({
-        status: "success",
-        projects: projectlist
+        if (response.statusCode == 200) {          
+          console.error(response.body);
+
+          var user = JSON.parse(response.body);
+          var userProjects = [];
+          
+          if (user.fields) {
+            var userProjectIds = user.fields.projects || [];
+
+            // looping through project ids 
+            // and making async db requests to retrieve project information
+            async.each(userProjectIds,
+              function(projectId, callback){
+                
+                console.log('project id: '+projectId);
+              },
+              // everything's done
+              function(err){
+                console.log(userProjects);
+              }
+            );
+          }
+
+          res.status(200);
+          res.json({
+            status: "success",
+            projects: userProjects
+          });
+
+          
+
+          // // initial stage, mock responses
+          // res.status(200);
+
+          // var projectlist = [];
+          // projectlist.push({'projectname':'AB Industries','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"},{"userid": "5703f9eb5306583d5a000119"}]});
+          // projectlist.push({'projectname':'Lufthansa','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
+          // projectlist.push({'projectname':'Deloitte Digital','projectid':'5703f9eb5306583d5a000020','current_practice':'',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
+
+          // res.json({
+          //   status: "success",
+          //   projects: projectlist
+          // });
+
+        } 
+        else if (response.statusCode == 302) {
+          helper.relogin302(res);
+        }
+        else if (response.statusCode == 404) {
+          helper.notFound404(res);
+        }
+        else {
+          helper.generic400(res);
+        }
+
       });
 
     }     
     else { // payload validation failed      
       helper.malformed400(res);
     }
+
 
   });
   
