@@ -107,9 +107,8 @@ function projectRoutes() {
           // internal error response
           helper.internal500(res);             
         } 
-        else if (response.statusCode == 200) {          
-          console.error(response.body);
-
+        else if (response.statusCode == 200) {
+          
           var user = JSON.parse(response.body);
           var userProjects = [];
           
@@ -118,38 +117,55 @@ function projectRoutes() {
 
             // looping through project ids 
             // and making async db requests to retrieve project information
-            async.each(userProjectIds,
+            async.each(userProjectIds, 
+
               function(projectId, callback){
-                
-                console.log('project id: '+projectId);
+
+                // all user lookup
+                var options = {
+                  "act": "read",
+                  "type": "sematProjects",
+                  "guid": ""+projectId.projectid    
+                };
+
+                // db query
+                fh.db(options, function (err, data) {
+
+                  if (err) {
+                    console.error("db error: " + err);
+                    callback(); 
+                  }
+                  else if (JSON.stringify(data) == '{}'){
+                    console.error('project with id: '+projectId.projectid+' not found');
+                    callback(); 
+                  }
+                  else {
+                    // got project data
+                    // prepare data and push to array
+                    var singleProject = {};
+                    singleProject.project_name = data.fields.project_name;
+                    singleProject.projectid = data.guid;
+                    singleProject.current_practice = data.fields.current_practice;
+                    singleProject.semat_alphas = data.fields.semat_alphas;
+                    singleProject.users = data.fields.users;
+
+                    userProjects.push(singleProject);
+                    callback();             
+                  }
+                });              
               },
-              // everything's done
-              function(err){
-                console.log(userProjects);
+              
+              // asynch stuff done. send response
+              function(err){                
+                res.status(200);
+                res.json({
+                  status: "success",
+                  projects: userProjects
+                });
               }
-            );
-          }
-
-          res.status(200);
-          res.json({
-            status: "success",
-            projects: userProjects
-          });
-
+            ); // end async.each()
           
-
-          // // initial stage, mock responses
-          // res.status(200);
-
-          // var projectlist = [];
-          // projectlist.push({'projectname':'AB Industries','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"},{"userid": "5703f9eb5306583d5a000119"}]});
-          // projectlist.push({'projectname':'Lufthansa','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
-          // projectlist.push({'projectname':'Deloitte Digital','projectid':'5703f9eb5306583d5a000020','current_practice':'',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]});
-
-          // res.json({
-          //   status: "success",
-          //   projects: projectlist
-          // });
+          }
         } 
         else if (response.statusCode == 302) {
           helper.relogin302(res);
@@ -160,15 +176,11 @@ function projectRoutes() {
         else {
           helper.generic400(res);
         }
-
       });
-
     }     
     else { // payload validation failed      
       helper.malformed400(res);
     }
-
-
   });
   
   // API resource to create a new project
