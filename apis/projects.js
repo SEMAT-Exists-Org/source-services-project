@@ -8,11 +8,13 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var request = require('request');
 var fh = require('fh-mbaas-api');
+
 var validator = require('validator');
 var crypto = require('crypto');
 var uuid = require('uuid');
 var request = require('request');
 var async = require("async");
+var moment = require('moment');
 
 
 // common methods
@@ -187,9 +189,10 @@ function projectRoutes() {
   // API resource to create a new project
   projectRouter.post('/', function(req, res) {
 
-    // approach
-    // 1. validate project_name and users from the request JSON payload
-    // 2. create new project with the requrs details. project guid becomes a unique id.
+    // implementation
+    // 1. validate project_name and the users array from the request JSON payload
+    // 2. create a new project with the provided details details or fail with malformed request.
+    // project guid becomes a unique id.
 
     // retrieve request payload details
     var project_name = req.body.project_name || '';
@@ -212,7 +215,13 @@ function projectRoutes() {
         "way_of_working": "not_defined",
         "work": "not_defined",
         "software_system": "not_defined"
-      } 
+      }
+
+      // initial entry to the project history log
+      var history = [];
+      var now = moment();
+      var history_entry = {'time': now.format('YYYY-MM-DD HH:mm:ss'), 'message':'project created'};
+      history.push(history_entry);
 
       // new project data
       var options = {
@@ -222,7 +231,8 @@ function projectRoutes() {
           "project_name": ""+project_name,
           "current_practice":"",
           "semat_alphas": semat_alphas,
-          "users": users
+          "users": users,
+          "history": history
         }
       };
 
@@ -241,6 +251,7 @@ function projectRoutes() {
           project.projectid = data.guid;
           project.current_practice = data.fields.current_practice;
           project.semat_alphas = data.fields.semat_alphas;
+          project.history = data.fields.history;
 
           // good to send the response
           res.status(200);
@@ -252,6 +263,7 @@ function projectRoutes() {
         }
       });
     }
+
     else { // malformed request, wrong request values
       helper.malformed400(res);    
     }
