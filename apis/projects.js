@@ -25,7 +25,7 @@ var helper = require('../utilities/helper.js');
 var userServiceUrl = 'http://localhost:8001/users';
 
 
-// main funcionality
+// main functionality
 function projectRoutes() {
   
   var projectRouter = new express.Router();
@@ -205,13 +205,13 @@ function projectRoutes() {
       // semat alphas / alpha states relate to specific library
       // hardcoded for now, but to be dynamically pulled in the future
       var semat_alphas = {
-        "opportunity": "not defined",
-        "requirements": "not defined",
-        "stakeholders": "not defined",
-        "team": "not defined",
-        "way_of_working": "not defined",
-        "work": "not defined",
-        "software_system": "not defined"
+        "opportunity": "not_defined",
+        "requirements": "not_defined",
+        "stakeholders": "not_defined",
+        "team": "not_defined",
+        "way_of_working": "not_defined",
+        "work": "not_defined",
+        "software_system": "not_defined"
       } 
 
       // new project data
@@ -284,7 +284,7 @@ function projectRoutes() {
     };
 
     fh.db(options, function (err, data) {
-      
+
       if (err) {
         console.error("dbcomms error: " + err);
         // internal error response
@@ -293,10 +293,12 @@ function projectRoutes() {
       else {
         // if returned object is empty 
         // the project was not found in database
-        if (data == {}){
+        data = JSON.stringify(data);
+
+        if (data === '{}'){
           helper.notFound404(res);
         } 
-        else { // succesfully deleted the project
+        else { // successfully deleted the project
           res.status(200);
           res.json({status: 'success', message: 'project deleted'});
         }                     
@@ -318,7 +320,7 @@ function projectRoutes() {
       });
   });
 
-  projectRouter.get('*', function(req, res) {
+  projectRouter.post('*', function(req, res) {
 
       // error response
       res.status(400);
