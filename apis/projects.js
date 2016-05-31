@@ -272,15 +272,95 @@ function projectRoutes() {
   // API resource to update an existing project
   projectRouter.put('/:projectid', function(req, res) {  
     
-    // initial stage, mock responses
-    res.status(200);
+    // implementation
+    // 1. validate if all required request parameters are present / valid
+    // 2. retrieve the instance of the project by id
+    // 3. modify the submitted parameters
+    // 4. update the project object in the DB
 
-    var project = {'projectname':'Project Name 1','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},"users":[{"userid": "5703f9eb5306583d5a000118"}]};
-    
-    res.json({
-      status: "success",
-      project: project
-    });
+    var guid = req.params.projectid || '';
+
+    // preparing for validation
+    var semat_alphas = req.body.semat_alphas || {};
+    var history = req.body.history || '';
+    var users = req.body.users || [];
+
+    // validate if valid uuid value
+    if ((Object.prototype.toString.call(history) === '[object Array]') &&
+        (Object.prototype.toString.call(users) === '[object Array]')){
+
+      // TODO security - only admin users can update
+      // first we retrieve project by id
+      var options = {
+        "act": "read",
+        "type": "sematProjects",
+        "guid": ""+guid
+      };
+
+      fh.db(options, function (err, entity) {
+
+        var entityString = JSON.stringify(entity);
+
+        if (err) {
+          console.error("dbcomms error: " + err);
+          // internal error response
+          helper.internal500(res);
+
+        } else if (entityString === '{}'){
+            console.error('project with id: '+guid+' not found');
+            helper.notFound404(res);
+
+        } else {
+
+          // project found and will be updated
+          var entityToUpdate = entity.fields;
+          console.log('retrieved project: ' + entityToUpdate);
+          entityToUpdate.semat_alphas = semat_alphas;
+          entityToUpdate.history.push(history[0]);
+          entityToUpdate.users.push(users[0]);
+
+          // prepare query
+          var options = {
+            "act": "update",
+            "type": "sematProjects",
+            "guid": ""+guid,
+            "fields": entityToUpdate
+          };
+
+          // db query
+          fh.db(options, function (err, data) {
+            if (err) {
+              console.error("dbcomms error: " + err);
+              // internal error response
+              helper.internal500(res);
+            }
+            else {
+
+              // user details response
+              res.status(200);
+              res.json({status: 'success', project:data});
+            }
+          });
+
+        }
+
+      });
+
+    } else { // bad request parameters
+      // generic 400 error response
+      helper.generic400(res);
+    }
+
+    // // initial stage, mock responses
+    // res.status(200);
+    //
+    // var project = {'projectname':'Project Name 1','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},"users":[{"userid": "5703f9eb5306583d5a000118"}]};
+    //
+    // res.json({
+    //   status: "success",
+    //   project: project
+    // });
+
   });
 
   // API resource to delete an existing project
