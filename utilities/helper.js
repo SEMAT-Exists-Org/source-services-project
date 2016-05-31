@@ -72,13 +72,15 @@ Helper.prototype.relogin302 = function(res) {
   });
 };
 
-Helper.prototype.internal500 = function(res) {
+Helper.prototype.internal500 = function(res, errorMessage) {
+
+  var error = errorMessage || 'internal error';
 
   // error response
   res.status(500);
   res.json({
     status: 'error',
-    message: 'internal error',
+    message: error,
     "code":"500"
   });
 };

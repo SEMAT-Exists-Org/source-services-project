@@ -74,15 +74,15 @@ function projectRoutes() {
   projectRouter.get('/user/:userid', function(req, res) {
 
     // approach
-    // 1. validate the format of userid and  user token
+    // 1. validate the format of userid and user token
     // 2. get details from User service which project id's he has attached
-    // 3. get the details of array of projectids and return back to the client
+    // 3. get the details of array of projectid's and return back to the client
 
     // security
     // 1. client application provides user token it received after user
-    // has loged in via user service.
+    // has logged in via user service.
     // 2. project service is just proxying user token. If user token is not admin
-    // project service is just proxying error response back
+    // project service will just proxy the error response back
 
     var token = req.headers.token || '';
     var userid = req.params.userid || '';
@@ -103,9 +103,10 @@ function projectRoutes() {
 
         // comms error
         if (error) {
-          console.error("error comms to user: " + error);
+          console.error('communication with user service failed: ' + error);
+          var errormsg = 'communication with user service failed';
           // internal error response
-          helper.internal500(res);             
+          helper.internal500(res, errormsg);
         } 
         else if (response.statusCode == 200) {
           

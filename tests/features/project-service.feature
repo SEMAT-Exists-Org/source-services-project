@@ -11,15 +11,13 @@ Feature:
 		Then response code should be 200
 		And response body should be valid json
 
-	Scenario: As a client application I should get the detailed information about 
-	the specific project by its id
+	Scenario: As a client application I should get information about project by its id
 		Given I set User-Agent header to cucumber-tests
 		When I GET /projects/5703f9eb5306583d5a000018
 		Then response code should be 200
 		And response body should be valid json
 
-	Scenario: As a client application I should get the detailed information about 
-	all the projects specific user is associated with
+	Scenario: As a client application I should get information about all the user projects
 		Given I set User-Agent header to cucumber-tests
 		And I set token header to c8cb2c19-06e3-47c8-97e5-99b4a864cf25
 		When I GET /projects/user/5703f9eb5306583d5a000018
