@@ -13,7 +13,7 @@ Feature:
 
 	Scenario: As a client application I should get information about project by its id
 		Given I set User-Agent header to cucumber-tests
-		When I GET /projects/5703f9eb5306583d5a000018
+		When I GET /projects/574dcd5969b2b461a1000002
 		Then response code should be 200
 		And response body should be valid json
 
@@ -24,18 +24,18 @@ Feature:
 		Then response code should be 302
 		And response body should be valid json
 
-	Scenario: As a client application I should be able to create new project
+	Scenario: As a client application I should be able to create a new project
 		Given I set User-Agent header to cucumberjs-tests
 		And I set Content-Type header to application/json
-		And I set body to {"project_name":"NewProjectName", "users":[{"userid": "5703f9eb5306583d5a000118"}]}
+		And I set body to {"project_name":"NewProjectName"}
 		When I POST to /projects
 		Then response code should be 200
 		And response body should be valid json
 
-	Scenario: As a client application I should be able to create new project
+	Scenario: As a client application I should not create new project with spaces in project name
 		Given I set User-Agent header to cucumberjs-tests
 		And I set Content-Type header to application/json
-		And I set body to {"project_name":"New ProjectName", "users":[{"userid": "5703f9eb5306583d5a000118"}]}
+		And I set body to {"project_name":"New ProjectName"}
 		When I POST to /projects
 		Then response code should be 400
 		And response body should be valid json
@@ -43,8 +43,8 @@ Feature:
 	Scenario: As a client application I should be able to update existing project
 		Given I set User-Agent header to cucumberjs-tests
 		And I set Content-Type header to application/json
-		And I set body to {"project_name":"New Name"}
-		When I PUT /projects/5703f9eb5306583d5a000018
+		And I set body to {"semat_alphas":{"opportunity":"identified","requirements":"identified","stakeholders":"not_defined","team":"not_defined","way_of_working":"not_defined","work":"not_defined","software_system":"not_defined"},"history":[{"time":"2016-05-31 16:19:33","message":"new update"}]}
+		When I PUT /projects/5721e0eea36a8b556c000008
 		Then response code should be 200
 		And response body should be valid json
 
@@ -52,5 +52,5 @@ Feature:
 		Given I set User-Agent header to cucumber-tests
 		And I set Content-Type header to application/json
 		When I DELETE /projects/5703f9eb5306583d5a000018
-		Then response code should be 200
+		Then response code should be 404
 		And response body should be valid json
