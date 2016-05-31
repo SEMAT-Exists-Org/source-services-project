@@ -196,10 +196,9 @@ function projectRoutes() {
 
     // retrieve request payload details
     var project_name = req.body.project_name || '';
-    var users = req.body.users || '';
 
     // only progress if all required fields are present
-    if (validator.isAlphanumeric(project_name) && (Object.prototype.toString.call(users) === '[object Array]')) {
+    if (validator.isAlphanumeric(project_name)) {
 
       // validation passed
       // create the new project
@@ -231,7 +230,6 @@ function projectRoutes() {
           "project_name": ""+project_name,
           "current_practice":"",
           "semat_alphas": semat_alphas,
-          "users": users,
           "history": history
         }
       };
@@ -257,8 +255,7 @@ function projectRoutes() {
           res.status(200);
           res.json({
             status: "success",
-            project: project,
-            users: data.fields.users
+            project: project
           });
         }
       });
@@ -273,7 +270,8 @@ function projectRoutes() {
   projectRouter.put('/:projectid', function(req, res) {  
     
     // implementation
-    // 1. validate if all required request parameters are present / valid
+
+    // 1. validate if all required request parameters are present / valid (only history & semat_alphas can be updated)
     // 2. retrieve the instance of the project by id
     // 3. modify the submitted parameters
     // 4. update the project object in the DB
@@ -283,11 +281,9 @@ function projectRoutes() {
     // preparing for validation
     var semat_alphas = req.body.semat_alphas || {};
     var history = req.body.history || '';
-    var users = req.body.users || [];
 
     // validate if valid uuid value
-    if ((Object.prototype.toString.call(history) === '[object Array]') &&
-        (Object.prototype.toString.call(users) === '[object Array]')){
+    if ((Object.prototype.toString.call(history) === '[object Array]')){
 
       // TODO security - only admin users can update
       // first we retrieve project by id
@@ -314,10 +310,8 @@ function projectRoutes() {
 
           // project found and will be updated
           var entityToUpdate = entity.fields;
-          console.log('retrieved project: ' + entityToUpdate);
           entityToUpdate.semat_alphas = semat_alphas;
           entityToUpdate.history.push(history[0]);
-          entityToUpdate.users.push(users[0]);
 
           // prepare query
           var options = {
@@ -335,31 +329,18 @@ function projectRoutes() {
               helper.internal500(res);
             }
             else {
-
               // user details response
               res.status(200);
               res.json({status: 'success', project:data});
             }
           });
-
         }
-
       });
 
     } else { // bad request parameters
       // generic 400 error response
       helper.generic400(res);
     }
-
-    // // initial stage, mock responses
-    // res.status(200);
-    //
-    // var project = {'projectname':'Project Name 1','projectid':'5703f9eb5306583d5a000018','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},"users":[{"userid": "5703f9eb5306583d5a000118"}]};
-    //
-    // res.json({
-    //   status: "success",
-    //   project: project
-    // });
 
   });
 

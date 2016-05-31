@@ -45,12 +45,10 @@ This resource retrieves all the created projects.
         "work": "not established",
         "software_system": "not established"
       },
-      "users": [
+      "history": [
         {
-          "userid": "5703f9eb5306583d5a000118"
-        },
-        {
-          "userid": "5703f9eb5306583d5a000119"
+          "time": "2016-05-31 15:04:34",
+          "message": "project created"
         }
       ]
     },
@@ -67,10 +65,11 @@ This resource retrieves all the created projects.
         "work": "not established",
         "software_system": "not established"
       },
-      "users": [
-        {
-          "userid": "5703f9eb5306583d5a000118"
-        }
+      "history": [
+          {
+            "time": "2016-05-29 15:00:34",
+            "message": "project created"
+          }
       ]
     },
     {
@@ -86,10 +85,11 @@ This resource retrieves all the created projects.
         "work": "not established",
         "software_system": "not established"
       },
-      "users": [
-        {
-          "userid": "5703f9eb5306583d5a000118"
-        }
+      "history": [
+          {
+            "time": "2016-04-20 14:00:34",
+            "message": "project created"
+          }
       ]
     }
   ]
@@ -143,10 +143,11 @@ This resource retrieves the details about the specific project.
       "work": "not established",
       "software_system": "not established"
     },
-    "users": [
-      {
-        "userid": "5703f9eb5306583d5a000118"
-      }
+    "history": [
+        {
+            "time": "2016-05-29 15:00:34",
+            "message": "project created"
+        }
     ]
   }
 }
