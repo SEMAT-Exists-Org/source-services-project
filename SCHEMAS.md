@@ -139,9 +139,9 @@ This resource retrieves the details about the specific project.
       "requirements": "conceived",
       "stakeholders": "recognised",
       "team": "not established",
-      "way_of_working": "not established",
-      "work": "not established",
-      "software_system": "not established"
+      "way_of_working": "not_defined",
+      "work": "not_defined",
+      "software_system": "not_defined"
     },
     "history": [
         {
@@ -175,7 +175,7 @@ This resource retrieves the details about the specific project.
 
 #### GET /projects/user/{userid}
 
-This resource retrieves all the projects for specific user.
+This resource retrieves all the projects assigned to specific user.
 
 *Request*
 
@@ -195,10 +195,10 @@ This resource retrieves all the projects for specific user.
         "opportunity": "identified",
         "requirements": "conceived",
         "stakeholders": "recognised",
-        "team": "not established",
-        "way_of_working": "not established",
-        "work": "not established",
-        "software_system": "not established"
+        "team": "not_established",
+        "way_of_working": "not_established",
+        "work": "not_established",
+        "software_system": "not_established"
       },
       "users": [
         {
@@ -282,13 +282,7 @@ This resource creates new project.
 	Content-Type: application/json
 	
 	{
-  		"project_name": "Project Name 1",
-  		"current_practice": "Discovery",
-  		"users": [
-    		{
-      			"userid": "5703f9eb5306583d5a000118"
-    		}
-  		]
+  		"project_name": "ProjectName"
 	}
 
 *Request JSON Schema*
@@ -302,24 +296,6 @@ This resource creates new project.
     "project_name": {
       "id": "project_name",
       "type": "string"
-    },
-    "current_practice": {
-      "id": "current_practice",
-      "type": "string"
-    },
-    "users": {
-      "id": "users",
-      "type": "array",
-      "items": {
-        "id": "0",
-        "type": "object",
-        "properties": {
-          "userid": {
-            "id": "userid",
-            "type": "string"
-          }
-        }
-      }
     }
   },
   "required": [
@@ -334,23 +310,24 @@ This resource creates new project.
 {
   "status": "success",
   "project": {
-    "projectname": "Project Name 1",
-    "projectid": "5703f9eb5306583d5a000018",
-    "current_practice": "Discovery",
+    "project_name": "NewName2",
+    "projectid": "574dcca569b2b461a1000001",
+    "current_practice": "",
     "semat_alphas": {
-      "opportunity": "not established",
-      "requirements": "not established",
-      "stakeholders": "not established",
-      "team": "not established",
-      "way_of_working": "not established",
-      "work": "not established",
-      "software_system": "not established"
+      "opportunity": "not_defined",
+      "requirements": "not_defined",
+      "stakeholders": "not_defined",
+      "team": "not_defined",
+      "way_of_working": "not_defined",
+      "work": "not_defined",
+      "software_system": "not_defined"
     },
-    "users":[
-    	{
-    		"userid": "5703f9eb5306583d5a000118"
-    	}
-  	]
+    "history": [
+      {
+        "time": "2016-05-31 18:40:53",
+        "message": "project created"
+      }
+    ]
   }
 }
 ```
@@ -389,18 +366,19 @@ This resource creates new project.
 		"current_practice": "Discovery",
     	"semat_alphas": {
       		"opportunity": "identified",
-      		"requirements": "not established",
-      		"stakeholders": "not established",
-      		"team": "not established",
-      		"way_of_working": "not established",
-      		"work": "not established",
-      		"software_system": "not established"
+      		"requirements": "not_defined",
+      		"stakeholders": "not_defined",
+      		"team": "not_defined",
+      		"way_of_working": "not_defined",
+      		"work": "not_defined",
+      		"software_system": "not_defined"
     	},
-    	"users":[
-    		{
-    			"userid": "5703f9eb5306583d5a000118"
-    		}
-  		]
+        "history": [
+            {
+             "time": "2016-05-31 13:19:33",
+             "message": "project created"
+            }
+        ]
   	}
     	
 
@@ -409,63 +387,69 @@ This resource creates new project.
 ```json
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "/",
   "type": "object",
   "properties": {
     "current_practice": {
-      "id": "current_practice",
       "type": "string"
     },
     "semat_alphas": {
-      "id": "semat_alphas",
       "type": "object",
       "properties": {
         "opportunity": {
-          "id": "opportunity",
           "type": "string"
         },
         "requirements": {
-          "id": "requirements",
           "type": "string"
         },
         "stakeholders": {
-          "id": "stakeholders",
           "type": "string"
         },
         "team": {
-          "id": "team",
           "type": "string"
         },
         "way_of_working": {
-          "id": "way_of_working",
           "type": "string"
         },
         "work": {
-          "id": "work",
           "type": "string"
         },
         "software_system": {
-          "id": "software_system",
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "opportunity",
+        "requirements",
+        "stakeholders",
+        "team",
+        "way_of_working",
+        "work",
+        "software_system"
+      ]
     },
-    "users": {
-      "id": "users",
+    "history": {
       "type": "array",
       "items": {
-        "id": "0",
         "type": "object",
         "properties": {
-          "userid": {
-            "id": "userid",
+          "time": {
+            "type": "string"
+          },
+          "message": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "time",
+          "message"
+        ]
       }
     }
   },
-  "required": []
+  "required": [
+    "semat_alphas",
+    "history"
+  ]
 }
 ```
 	
@@ -475,23 +459,27 @@ This resource creates new project.
 {
   "status": "success",
   "project": {
-    "projectname": "Project Name 1",
-    "projectid": "5703f9eb5306583d5a000018",
-    "current_practice": "Discovery",
-    "semat_alphas": {
-      "opportunity": "identified",
-      "requirements": "not established",
-      "stakeholders": "not established",
-      "team": "not established",
-      "way_of_working": "not established",
-      "work": "not established",
-      "software_system": "not established"
-    },
-    "users":[
-    	{
-    		"userid": "5703f9eb5306583d5a000118"
-    	}
-  	]
+    "type": "sematProjects",
+    "guid": "5721deeea36a8b556c000003",
+    "fields": {
+      "project_name": "NetworkReail",
+      "current_practice": "",
+      "semat_alphas": {
+        "opportunity": "identified",
+        "requirements": "identified",
+        "stakeholders": "not_defined",
+        "team": "not_defined",
+        "way_of_working": "not_defined",
+        "work": "not_defined",
+        "software_system": "not_defined"
+      },
+      "history": [
+        {
+          "time": "2016-05-31 17:29:33",
+          "message": "opportunity updated"
+        }
+      ]
+    }
   }
 }
 ```

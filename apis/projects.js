@@ -1,5 +1,5 @@
-// User service
-// Users API resources
+// Projects service
+// Projects API resources
 // author @sauliuz
 
 var util = require('util');
@@ -330,7 +330,14 @@ function projectRoutes() {
           // project found and will be updated
           var entityToUpdate = entity.fields;
           entityToUpdate.semat_alphas = semat_alphas;
-          entityToUpdate.history.push(history[0]);
+
+          // handle the case if history array doesn't exist (old projects)
+          if ((Object.prototype.toString.call(entityToUpdate.history) === '[object Array]')){
+            entityToUpdate.history.push(history[0]);
+          } else {
+            entityToUpdate.history = [];
+            entityToUpdate.history.push(history[0]);
+          }
 
           // prepare query
           var options = {
