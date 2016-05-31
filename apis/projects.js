@@ -59,16 +59,35 @@ function projectRoutes() {
   });
 
   // API resource to retrieve single project details
-  projectRouter.get('/:projectid', function(req, res) {  
-    
-    // initial stage, mock responses
-    res.status(200);
+  projectRouter.get('/:projectid', function(req, res) {
 
-    var project = {'projectname':'Lufthansa','projectid':'5703f9eb5306583d5a000019','current_practice':'Discovery',"semat_alphas": {"opportunity": "identified","requirements": "conceived","stakeholders": "recognised","team": "not established","way_of_working": "not established","work": "not established","software_system": "not established"},'users':[{"userid": "5703f9eb5306583d5a000118"}]};
+    var guid = req.params.projectid || '';
 
-    res.json({
-      status: "success",
-      project: project
+    // project lookup by id
+    var options = {
+      "act": "read",
+      "type": "sematProjects",
+      "guid": ""+guid
+    };
+
+    // db query
+    fh.db(options, function (err, data) {
+
+      if (err) {
+        console.error("dbcomms error: " + err);
+        // internal error response
+        helper.internal500(res);
+      }
+      else if (JSON.stringify(data) === '{}'){
+        // no project found
+        helper.notFound404(res);
+      }
+      else {
+        // found the project
+        // send it back
+        res.status(200);
+        res.json(data);
+      }
     });
   });
 
