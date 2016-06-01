@@ -23,8 +23,8 @@ var helper = require('../utilities/helper.js');
 
 // service endpoints
 // TODO move these to configuration. 
-var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
-//var userServiceUrl = 'http://localhost:8001/users';
+//var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
+var userServiceUrl = 'http://localhost:8001/users';
 
 
 // main functionality
