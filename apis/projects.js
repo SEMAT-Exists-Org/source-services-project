@@ -23,8 +23,8 @@ var helper = require('../utilities/helper.js');
 
 // service endpoints
 // TODO move these to configuration. 
-//var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
-var userServiceUrl = 'http://localhost:8001/users';
+var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
+//var userServiceUrl = 'http://localhost:8001/users';
 
 
 // main functionality
@@ -214,10 +214,10 @@ function projectRoutes() {
     // project guid becomes a unique id.
 
     // retrieve request payload details
-    var project_name = req.body.project_name || '';
+    var project_name = req.body.project_name || null;
 
     // only progress if all required fields are present
-    if (validator.isAlphanumeric(project_name)) {
+    if (project_name) {
 
       // validation passed
       // create the new project
